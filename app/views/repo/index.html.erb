@@ -1,0 +1,21 @@
+<%= form_tag repo_index_path do %>
+    <%= text_field_tag 'address', @address %>
+    <%= submit_tag 'Search' %>
+<% end %>
+
+<% if @error %>
+    <h3>Error</h3>
+    <div><%= @error %></div>
+<% end %>
+
+<% if @result %>
+    <% unless @result.ready? %>
+        <b>Result is being prepared by Github...</b>
+        <script type="text/javascript">
+            setTimeout(1000, function(){ $('input[type=submit]').click() });
+        </script>
+    <% else %>
+        <h3>Result</h3>
+    <% end %>
+<% end %>
+
