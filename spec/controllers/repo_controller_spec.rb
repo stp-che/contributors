@@ -7,8 +7,12 @@ describe RepoController do
 
     before {
       allow(GithubStat).to(
-        receive(:contributors){ github_stat_result }.tap{|r|
-          r.and_yield(github_stat_error) if github_stat_error
+        receive(:contributors).tap{|r|
+          if github_stat_error
+            r.and_raise github_stat_error
+          else
+            r.and_return github_stat_result
+          end
         }
       )
     }
@@ -31,12 +35,15 @@ describe RepoController do
     end
 
     context 'with :address param' do
+      let(:raises_error){ false }
 
       before { 
-        get :index, params: {address: address}
+        unless raises_error
+          get :index, params: {address: address}
 
-        # во всех случаях ответ должен быть ОК
-        expect(response.status).to eq 200
+          # во всех случаях ответ должен быть ОК
+          expect(response.status).to eq 200
+        end
       }      
 
       context 'when address is blank' do
@@ -102,11 +109,22 @@ describe RepoController do
           end
         end
 
-        context 'when GithubStat.contributors yields an error' do
-          let(:github_stat_error){ StandardError.new 'terrible mistake' }
+        context 'when GithubStat.contributors raises error' do
+          context 'GithubStat::Error' do
+            let(:github_stat_error){ GithubStat::Error.new 'terrible mistake' }
 
-          it 'assigns error message to @error' do
-            expect(assigns(:error)).to include 'terrible mistake'
+            it 'assigns error message to @error' do
+              expect(assigns(:error)).to include 'terrible mistake'
+            end
+          end
+
+          context 'other error' do
+            let(:raises_error){ true }
+            let(:github_stat_error){ StandardError.new }
+
+            it 'raises the error' do
+              expect{ get :index, params: {address: address} }.to raise_error github_stat_error
+            end
           end
         end
       end

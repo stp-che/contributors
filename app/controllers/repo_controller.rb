@@ -5,9 +5,11 @@ class RepoController < ApplicationController
       unless @address =~ /https?:\/\/(www\.)?github.com\/(.+)/
         @error = "#{@address.inspect} is not a github repo adress"
       else
-        @result = GithubStat.contributors($2){|err|
-          @error = err.message
-        }
+        begin
+          @result = GithubStat.contributors($2)
+        rescue GithubStat::Error => e
+          @error = e.message
+        end
       end
     end
   end
