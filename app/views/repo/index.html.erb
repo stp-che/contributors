@@ -22,7 +22,7 @@
         <b>Result is being prepared by Github...</b>
         <script type="text/javascript">
             $(document).ready(function(){
-                setTimeout(1000, function(){ $('input[type=submit]').click() });
+                setTimeout(function(){ $('#search_form').submit(); }, 1000);
             });
         </script>
     <% else %>
