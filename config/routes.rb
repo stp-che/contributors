@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   resources :repo, only: [:index] do
     collection do
-      post :index
-      get :stat
+      get :diplom
+      post :diploms_archive
     end
   end
 

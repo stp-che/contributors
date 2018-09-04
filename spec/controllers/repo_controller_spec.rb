@@ -83,8 +83,8 @@ describe RepoController do
           expect(GithubStat).to have_received(:contributors).with('foo/bar')
         end
 
-        it 'assigns GithubStat.contributors result to @result' do
-          expect(assigns(:result)).to eq github_stat_result
+        it 'assigns GithubStat.contributors result to @contributors' do
+          expect(assigns(:contributors)).to eq github_stat_result
         end
 
         it 'does not fill @error' do

@@ -1,3 +1,5 @@
+require 'net/http'
+
 class GithubStat
 
   class Error < ::StandardError

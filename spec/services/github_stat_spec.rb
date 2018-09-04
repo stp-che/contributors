@@ -5,14 +5,6 @@ describe GithubStat do
     let(:repo_path){ 'foo/bar' }
 
     subject(:contributors){ described_class.contributors(repo_path) }
-    #   {}.tap do |c|
-    #     c[:result] = described_class.contributors(repo_path){|err|
-    #       c[:error] = err
-    #     }
-    #   end
-    # }
-    # let(:result){ calling[:result] }
-    # let(:error){ calling[:error] }
 
     let(:response_status){ 200 }
     let(:response_content_type){ 'application/json; charset=utf-8' }

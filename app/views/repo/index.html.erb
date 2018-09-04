@@ -1,21 +1,62 @@
-<%= form_tag repo_index_path do %>
+<%= form_tag repo_index_path, method: :get, enforce_utf8: false, id: 'search_form' do %>
     <%= text_field_tag 'address', @address %>
-    <%= submit_tag 'Search' %>
 <% end %>
+<%= button_tag 'Search', id: 'search_btn' %>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#search_btn').click(function(){
+            $('#search_form').submit();
+            return false;
+        });
+    });
+</script>
 
 <% if @error %>
     <h3>Error</h3>
     <div><%= @error %></div>
 <% end %>
 
-<% if @result %>
-    <% unless @result.ready? %>
+<% if @contributors %>
+    <% unless @contributors.ready? %>
         <b>Result is being prepared by Github...</b>
         <script type="text/javascript">
-            setTimeout(1000, function(){ $('input[type=submit]').click() });
+            $(document).ready(function(){
+                setTimeout(1000, function(){ $('input[type=submit]').click() });
+            });
         </script>
     <% else %>
-        <h3>Result</h3>
+        <h3>Results</h3>
+        <% top3 = @contributors[0..2] %>
+        <% if top3.empty? %>
+            <div>No contributors found</div>
+        <% else %>
+            <%= form_tag({action: :diploms_archive}, {id: 'zip_form'}) do %>
+                <table>
+                    <% top3.each_with_index do |contributor, i| %>
+                        <tr>
+                            <td><%= contributor %></td>
+                            <td>
+                                <%= link_to 'download pdf', 
+                                            {action: :diplom, rank: i+1, contributor: contributor},
+                                            {'data-turbolinks' => "false"}
+                                %>
+                                <%= hidden_field_tag "contributors[#{i+1}]", contributor %>
+                            </td>
+                        </tr>
+                    <% end %>
+                </table>
+                <a href="#" id="zip_link">Download zip (<%= top3.size %>)</a>
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $('#zip_link').click(function(){
+                            $('#zip_form').submit();
+                            return false;
+                        });
+                    });
+                </script>
+            <% end %>
+        <% end %>
     <% end %>
 <% end %>
 
