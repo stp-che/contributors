@@ -23,7 +23,7 @@
 
 <% if @contributors %>
     <% unless @contributors.ready? %>
-        <b>Result is being prepared by Github...</b>
+        <h4 id="waiting">Result is being prepared by Github...</h4>
         <script type="text/javascript">
             $(document).ready(function(){
                 setTimeout(function(){ $('#search_form').submit(); }, 1000);
