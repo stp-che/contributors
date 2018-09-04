@@ -27,9 +27,11 @@ class Diplom
   def content
     @content ||= begin
       Prawn::Document.new.tap do |pdf|
-        pdf.text "PDF ##{@rank}"
-        pdf.text 'The awards goes to'
-        pdf.text @name
+        t = pdf.bounds.top
+        r = pdf.bounds.right
+        pdf.text_box "PDF ##{@rank}", align: :center, size: 80, at: [0, t-100], width: r
+        pdf.text_box 'The awards goes to', align: :center, size: 50, at: [0, t-220], width: r
+        pdf.text_box @name, align: :center, size: 30, at: [0, t-310], width: r
       end.render
     end
   end
