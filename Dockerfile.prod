@@ -6,13 +6,17 @@ ENV INSTALL_PATH /app
 RUN mkdir -p $INSTALL_PATH
 WORKDIR $INSTALL_PATH
 
+ENV RAILS_ENV production
+
 COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
 
-RUN bundle install
+RUN bundle install --without test development
 
 COPY . .
 
-EXPOSE 3000
+RUN bundle exec rake assets:precompile
+
+EXPOSE $PORT
 
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]

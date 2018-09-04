@@ -1,0 +1,13 @@
+version: '3'
+services:
+  web:
+    image: contributors
+    build:
+      context: .
+      dockerfile: ./Dockerfile.prod
+    environment:
+      PORT: "3001"
+    ports:
+      - 3000:3001
+    tty: true
+    stdin_open: true
