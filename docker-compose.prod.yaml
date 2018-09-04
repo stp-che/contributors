@@ -7,6 +7,7 @@ services:
       dockerfile: ./Dockerfile.prod
     environment:
       PORT: "3001"
+      RAILS_SERVE_STATIC_FILES: "true"
     ports:
       - 3000:3001
     tty: true

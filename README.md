@@ -1,24 +1,27 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The **Contributors** appliction shows top 3 contributors for Github repos and generates PDF certificates for them.
 
-Things you may want to cover:
+## Run
 
-* Ruby version
+Build production container:
 
-* System dependencies
+    $ docker-compose -f docker-compose.prod.yaml build
 
-* Configuration
+Run production:
 
-* Database creation
+    $ docker-compose -f docker-compose.prod.yaml up
 
-* Database initialization
+## Development
 
-* How to run the test suite
+Build development container:
 
-* Services (job queues, cache servers, search engines, etc.)
+    $ docker-compose -f docker-compose.dev.yaml build
 
-* Deployment instructions
+Run development:
 
-* ...
+    $ docker-compose -f docker-compose.dev.yaml up
+
+Run specs:
+
+    $ docker-compose -f docker-compose.dev.yaml run --rm web rspec -cfd
