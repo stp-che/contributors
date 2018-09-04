@@ -1,3 +1,5 @@
+<div id="repo_search" class="<%= 'empty' if @address.nil? %>">
+
 <%= form_tag repo_index_path, method: :get, enforce_utf8: false, id: 'search_form' do %>
     <%= text_field_tag 'address', @address %>
 <% end %>
@@ -13,8 +15,10 @@
 </script>
 
 <% if @error %>
-    <h3>Error</h3>
-    <div><%= @error %></div>
+    <div class="error">
+        <h3>Error</h3>
+        <div><%= @error %></div>
+    </div>
 <% end %>
 
 <% if @contributors %>
@@ -32,10 +36,10 @@
             <div>No contributors found</div>
         <% else %>
             <%= form_tag({action: :diploms_archive}, {id: 'zip_form'}) do %>
-                <table>
+                <table id="results">
                     <% top3.each_with_index do |contributor, i| %>
                         <tr>
-                            <td><%= contributor %></td>
+                            <td class="name"><%= contributor %></td>
                             <td>
                                 <%= link_to 'download pdf', 
                                             {action: :diplom, rank: i+1, contributor: contributor},
@@ -60,3 +64,4 @@
     <% end %>
 <% end %>
 
+</div>
